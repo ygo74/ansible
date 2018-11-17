@@ -1,0 +1,4 @@
+# file: roles/win_sql_engine/vars/main.yml
+---
+#
+# foo: bar
