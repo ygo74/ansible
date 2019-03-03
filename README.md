@@ -40,6 +40,12 @@ python -m virtualenv my_env
 source my_env/bin/activate
 #Install molecule and docker using pip
 python -m pip install molecule docker
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt install docker-ce
+
+pip install docker-py
 ```
 
 Remark : If you are in a git repository, add my_env to .gitignore
