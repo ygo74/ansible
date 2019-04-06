@@ -1,6 +1,0 @@
-# file: roles/win_sql_engine/handlers/main.yml
----
-# For example,
-# 
-# - name: restart ntpd
-#   service: name=ntpd state=restarted
