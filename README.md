@@ -23,7 +23,16 @@ Test ansible role with Molecule | https://www.digitalocean.com/community/tutoria
 ### Usage
 
 **Create new role**
+```bash
 molecule init role -r ansible-apache -d docker  
+```
+
+**Add to en existing role**
+```bash
+cd roles/windows_bootstrap
+molecule init scenario --role-name windows_bootstrap --driver-name docker
+```
+
 
 
 

@@ -1,5 +1,6 @@
+---
 - name: Ensure PowershellGet and package Management
-  block: 
+  block:
   - name: Add package Management and Powershell Get
     win_psmodule:
       name: '{{ item.name }}'

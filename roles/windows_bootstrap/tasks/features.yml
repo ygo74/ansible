@@ -1,3 +1,4 @@
+---
 - name: Install Windows Features
   block:
   - name: Install Windows features
@@ -11,7 +12,7 @@
 
   - name: Display windows feature installation status
     debug:
-      var: windows_bootstrap_features_result       
+      var: windows_bootstrap_features_result
       verbosity: '{{ windows_bootstrap_diagnostic_level_debug }}'
 
   - name: reboot if installing Web-Server feature requires it

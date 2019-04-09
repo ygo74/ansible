@@ -8,12 +8,26 @@ trigger:
     - roles/windows_bootstrap/*
     exclude:
     - /**/*.md
-    
+
 jobs:
 - job: BuildPackage
   pool:
     vmImage: 'Ubuntu-16.04'
 
   steps:
-  - script: echo "hello"
-    name: echovar
+  - task: UsePythonVersion@0
+    inputs:
+        versionSpec: '2.7'
+        architecture: 'x64'
+
+  - script: |
+        python -m pip install --upgrade pip setuptools wheel
+        python -m pip install virtualenv
+        python -m virtualenv my_env
+        source my_env/bin/activate
+        python -m pip install molecule docker
+        pip install docker-py
+    displayName: 'Install tools'
+
+  - script: find roles/windows_bootstrap/ -type f -not -path '*/\.*' -exec grep -Il '.' {} \; | xargs -d '\n' -L 1 dos2unix -k
+    displayName: 'Convert files dos2unix'
