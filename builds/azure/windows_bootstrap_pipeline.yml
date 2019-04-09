@@ -20,15 +20,30 @@ jobs:
         versionSpec: '2.7'
         architecture: 'x64'
 
-  - script: |
-        python -m pip install --upgrade pip setuptools wheel
-        python -m pip install virtualenv
-        python -m virtualenv my_env
-        source my_env/bin/activate
-        python -m pip install molecule docker
-        pip install docker-py
-        sudo apt-get install dos2unix
+  - task: Bash@3
+    inputs:
+        workingDirectory: roles/windows_bootstrap
+        script: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install virtualenv
+          python -m virtualenv my_env
+          source my_env/bin/activate
+          python -m pip install molecule docker
+          pip install docker-py
+          sudo apt-get install dos2unix
     displayName: 'Install tools'
 
-  - script: find roles/windows_bootstrap/ -type f -not -path '*/\.*' -exec grep -Il '.' {} \; | xargs -d '\n' -L 1 dos2unix -k
+  - task: Bash@3
+    inputs:
+        workingDirectory: roles/windows_bootstrap
+        script: |
+          find roles/windows_bootstrap/ -type f -not -path '*/\.*' -exec grep -Il '.' {} \; | xargs -d '\n' -L 1 dos2unix -k
     displayName: 'Convert files dos2unix'
+
+  - task: Bash@3
+    inputs:
+        workingDirectory: roles/windows_bootstrap
+        script: |
+          source my_env/bin/activate
+          molecule lint
+    displayName: 'Molecule lint'
