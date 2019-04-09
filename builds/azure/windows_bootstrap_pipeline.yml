@@ -6,6 +6,8 @@ trigger:
   paths:
     include:
     - roles/windows_bootstrap/*
+    exclude:
+    - /**/*.md
     
 jobs:
 - job: BuildPackage
