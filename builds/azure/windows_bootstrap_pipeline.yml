@@ -23,7 +23,6 @@ jobs:
   - task: Bash@3
     inputs:
         targetType: 'inline'
-        workingDirectory: roles/windows_bootstrap
         script: |
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install virtualenv
@@ -47,6 +46,6 @@ jobs:
         targetType: 'inline'
         workingDirectory: roles/windows_bootstrap
         script: |
-          source my_env/bin/activate
+          source ../../my_env/bin/activate
           molecule lint
     displayName: 'Molecule lint'
