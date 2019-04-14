@@ -13,9 +13,15 @@ rules:
   # truthy: disable
   colons:
     max-spaces-after: -1
+    level: error
+  commas:
+    max-spaces-after: -1
+    level: error
   indentation:
     indent-sequences: false
     #Fix this ignore path
     ignore: |
       molecule.yml
       playbook.yml
+  key-duplicates: enable
+
