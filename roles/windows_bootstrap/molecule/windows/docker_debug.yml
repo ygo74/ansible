@@ -1,0 +1,50 @@
+---
+- name: Create Windows Docker image
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    published_ports:
+    - "9985:5985"
+    - "9985:5985"
+
+  tasks:
+  - debug:
+      msg: "-p {{ published_ports | join(' -p ') }}"
+
+  - fail: msg="stop"
+
+  - name: Create molecule instance(s)
+    shell: "docker run --detach --name {{ item.name }} -p {{ item.published_ports | join(' -p ') }}  {{ item.image }}"
+    register: server
+    with_items: "{{ molecule_yml.platforms }}"
+    async: 7200
+    poll: 0
+
+  - debug:
+      var: server
+
+  - name: Query Docker status
+    shell: "docker inspect {{ server.stdout }}"
+    register: docker_jobs
+
+  - debug:
+      var: docker_jobs
+
+  - fail: msg="stop"
+
+  - debug:
+      var: item
+    retries: 100
+    with_items: "{{ server }}"
+
+  - fail: msg="stop"
+
+  - name: Wait for instance(s) creation to complete
+    async_status:
+      jid: "{{ item.ansible_job_id }}"
+    register: docker_jobs
+    until: docker_jobs.finished
+    retries: 300
+    with_items: "{{ server.results }}"

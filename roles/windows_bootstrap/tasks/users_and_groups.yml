@@ -16,3 +16,10 @@
     debug:
       var: user_status
       verbosity: '{{ windows_bootstrap_diagnostic_level_debug }}'
+
+  - name: Check Local Users
+    win_user:
+      name:       'test1'
+      groups:
+      - Users
+      Ensure: 'Present'

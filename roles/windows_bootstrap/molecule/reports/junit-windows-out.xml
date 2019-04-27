@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?><testsuite errors="0" failures="1" name="pytest" skipped="0" tests="3" time="28.547"><testcase classname="tests.test_default" file="tests/test_default.py" line="7" name="test_user_test1_exits[ansible://instance]" time="17.899"><failure message="AnsibleException: Unexpected error: {u&apos;failed&apos;: True,
+ u&apos;item&apos;: None,
+ u&apos;msg&apos;: u&apos;Skipped. You might want to try check=False&apos;}">host = &lt;testinfra.host.Host object at 0x7fd7714880d0&gt;
+
+    def test_user_test1_exits(host):
+        &quot;&quot;&quot;
+        Unit test for the presence of the local user test1
+        :param host: instance under test
+        :return: None
+        &quot;&quot;&quot;
+    
+&gt;       assert host.ansible(
+            &quot;win_user&quot;,
+            &quot;name=&apos;test1&apos; Ensure=&apos;Present&apos;&quot;
+            )[&quot;changed&quot;] is False
+
+tests/test_default.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../../my_env/lib/python2.7/site-packages/testinfra/modules/ansible.py:49: in wrapper
+    return func(self, *args, **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;ansible&gt;, module_name = &apos;win_user&apos;
+module_args = &quot;name=&apos;test1&apos; Ensure=&apos;Present&apos;&quot;, check = True, kwargs = {}
+result = {&apos;failed&apos;: True, &apos;item&apos;: None, &apos;msg&apos;: &apos;Skipped. You might want to try check=False&apos;}
+
+    @need_ansible
+    def __call__(self, module_name, module_args=None, check=True, **kwargs):
+        result = self._host.backend.run_ansible(
+            module_name, module_args, check=check, **kwargs)
+        if result.get(&quot;failed&quot;, False) is True:
+&gt;           raise AnsibleException(result)
+E           AnsibleException: Unexpected error: {u&apos;failed&apos;: True,
+E            u&apos;item&apos;: None,
+E            u&apos;msg&apos;: u&apos;Skipped. You might want to try check=False&apos;}
+
+../../../../my_env/lib/python2.7/site-packages/testinfra/modules/ansible.py:80: AnsibleException</failure><system-err>INFO:testinfra:RUN Ansible(&apos;win_user&apos;, &quot;name=&apos;test1&apos; Ensure=&apos;Present&apos;&quot;, {&apos;check&apos;: True}): {u&apos;failed&apos;: True,
+ u&apos;item&apos;: None,
+ u&apos;msg&apos;: u&apos;Skipped. You might want to try check=False&apos;}
+</system-err></testcase><testcase classname="tests.test_default" file="tests/test_default.py" line="19" name="test_default[ansible://instance]" time="0.001"></testcase><testcase classname="tests.test_default" file="tests/test_default.py" line="27" name="test_temp_directory_exits[ansible://instance]" time="7.219"><system-err>INFO:testinfra:RUN Ansible(&apos;win_file&apos;, &quot;path=&apos;C:\\temp3&apos; state=directory&quot;, {&apos;check&apos;: True}): {&apos;_ansible_no_log&apos;: False,
+ &apos;_ansible_parsed&apos;: True,
+ u&apos;changed&apos;: False,
+ u&apos;msg&apos;: u&quot;Get-AnsibleParam: Parameter &apos;path&apos; has an invalid path &apos;C:\temp3&apos; specified.&quot;}
+</system-err></testcase></testsuite>

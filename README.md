@@ -38,6 +38,7 @@ molecule init role -r ansible-apache -d docker
 ```bash
 cd roles/windows_bootstrap
 molecule init scenario --role-name windows_bootstrap --driver-name docker
+molecule init scenario --role-name windows_bootstrap --driver-name docker --scenario-name windows
 ```
 
 
