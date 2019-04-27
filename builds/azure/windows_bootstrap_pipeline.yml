@@ -56,7 +56,7 @@ jobs:
         workingDirectory: roles/windows_bootstrap
         script: |
           source ../../my_env/bin/activate
-          molecule create  lint -s windows
+          molecule create  -s windows
     displayName: 'Create test infrastructure'
 
   - task: Bash@3
@@ -65,5 +65,5 @@ jobs:
         workingDirectory: roles/windows_bootstrap
         script: |
           source ../../my_env/bin/activate
-          molecule converge lint -s windows
+          molecule converge -s windows
     displayName: 'Execute windows_bootstrap roles'
