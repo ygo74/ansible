@@ -15,6 +15,7 @@ jobs:
   pool:
     vmImage: 'Ubuntu-16.04'
 
+  tasks:
   - task: AzureResourceGroupDeployment@2
     displayName: 'Azure Deployment:Create Or Update Resource Group action on AnsibleUnitTest'
     inputs:
