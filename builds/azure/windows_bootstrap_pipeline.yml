@@ -15,6 +15,16 @@ jobs:
     vmImage: 'Ubuntu-16.04'
 
   steps:
+  - task: AzureResourceGroupDeployment@2
+    displayName: 'Azure Deployment:Create Or Update Resource Group action on AnsibleUnitTest'
+    inputs:
+      azureSubscription: 'Visual Studio Enterprise (62177529-73f0-4e11-a584-5d3526dc6999)'
+      resourceGroupName: AnsibleUnitTest
+      location: 'France Central'
+      templateLocation: 'URL of the file'
+      csmFileLink: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-windows/azuredeploy.json'
+      csmParametersFileLink: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-windows/azuredeploy.parameters.json'
+
   - task: UsePythonVersion@0
     inputs:
         versionSpec: '2.7'
