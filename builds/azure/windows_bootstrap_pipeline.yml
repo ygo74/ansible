@@ -26,7 +26,7 @@ jobs:
       templateLocation: 'URL of the file'
       csmFileLink: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-windows/azuredeploy.json'
       csmParametersFileLink: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-windows/azuredeploy.parameters.json'
-      overrideParameters: '-adminUsername admin1 -adminPassword Passw@rd.1 -dnsLabelPrefix ygo74.ansible'
+      overrideParameters: '-adminUsername admin1 -adminPassword Passw@rd.1 -dnsLabelPrefix ygo74-ansible'
       enableDeploymentPrerequisites: ConfigureVMwithWinRM
 
   - task: UsePythonVersion@0
