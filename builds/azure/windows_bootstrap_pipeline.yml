@@ -10,18 +10,6 @@ trigger:
     - /**/*.md
 
 jobs:
-- job: PrepareExecutionEnvironment
-  pool:
-    vmImage: 'win1803'
-
-  container:
-    image: mcr.microsoft.com/windows/servercore:1803
-    options: --hostname container-test
-
-  steps:
-  - script: set
-
-
 - job: BuildPackage
   pool:
     vmImage: 'Ubuntu-16.04'
@@ -29,17 +17,17 @@ jobs:
   steps:
   - script: ping container-test
 
-  # - task: AzureResourceGroupDeployment@2
-  #   displayName: 'Azure Deployment:Create Or Update Resource Group action on AnsibleUnitTest'
-  #   inputs:
-  #     azureSubscription: 'Visual Studio Enterprise (62177529-73f0-4e11-a584-5d3526dc6999)'
-  #     resourceGroupName: AnsibleUnitTest
-  #     location: 'France Central'
-  #     templateLocation: 'URL of the file'
-  #     csmFileLink: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-windows/azuredeploy.json'
-  #     csmParametersFileLink: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-windows/azuredeploy.parameters.json'
-  #     overrideParameters: '-adminUsername $(adminUsername) -adminPassword $(Password) -dnsLabelPrefix $(dnsLabelPrefix)'
-  #     enableDeploymentPrerequisites: ConfigureVMwithWinRM
+  - task: AzureResourceGroupDeployment@2
+    displayName: 'Azure Deployment:Create Or Update Resource Group action on AnsibleUnitTest'
+    inputs:
+      azureSubscription: 'Visual Studio Enterprise (62177529-73f0-4e11-a584-5d3526dc6999)'
+      resourceGroupName: AnsibleUnitTest
+      location: 'France Central'
+      templateLocation: 'URL of the file'
+      csmFileLink: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-windows/azuredeploy.json'
+      csmParametersFileLink: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-windows/azuredeploy.parameters.json'
+      overrideParameters: '-adminUsername admin1 -adminPassword Passw@rd.1 -dnsLabelPrefix ygo74.ansible'
+      enableDeploymentPrerequisites: ConfigureVMwithWinRM
 
   - task: UsePythonVersion@0
     inputs:
