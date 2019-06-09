@@ -1,21 +1,41 @@
 ---
 - name: Converge
   hosts: all
+  gather_facts: true
 
   vars:
     windows_bootstrap_diagnostic_level_debug: 0
-    ansible_become: false
-    ansible_user: myadmin
-    ansible_password: loc@lPwd.1
-    ansible_port: 8985
-    ansible_host: 127.0.0.1
-    ansible_connection: winrm
-    ansible_winrm_transport: basic
-    ansible_winrm_server_cert_validation: ignore
-    ansible_winrm_scheme: http
+    # ansible_become: false
+    # ansible_user: myadmin
+    # ansible_password: loc@lPwd.1
+    # ansible_port: 8985
+    # ansible_host: 127.0.0.1
+    # ansible_connection: winrm
+    # ansible_winrm_transport: basic
+    # ansible_winrm_server_cert_validation: ignore
+    # ansible_winrm_scheme: http
+
+    windows_bootstrap_default_allowed_users:
+    - username: 'Administrator'
+      enabled:  false
+    - username: 'DefaultAccount'
+      enabled:  false
+    - username: 'Guest'
+      enabled:  false
+    - username: 'myadmin'
+      enabled:  true
+
 
   roles:
     - role: windows_bootstrap
       windows_bootstrap_users:
       - username: 'test1'
         password: 'bigPw@d.1'
+        enabled:  true
+        state:    'Present'
+      windows_bootstrap_groups:
+      - name: myApp
+        state: Present
+      - name: myApp2
+        state: Absent
+

@@ -1,0 +1,19 @@
+- name: Check the list of features with a reference list
+  block:
+    - name: Fail if we found features not in the reference list
+      fail:
+        msg: "{{ error_message }} : {{ item }}"
+      with_items:
+        - '{{ features_to_check | reject("in", features_references) | list }}'
+      ignore_errors: true
+      register: features_to_check_status
+
+    - name: Add error features in the error list
+      set_fact:
+        windows_features_error_list: '{{ windows_features_error_list
+                                         | default([])
+                                         + [ item.msg ]
+                                      }}'
+      no_log: true
+      with_items:
+        - '{{ features_to_check_status.results | default([]) }}'

@@ -1,9 +1,20 @@
 ---
 
-- name: Import tasks for users and group management
-  import_tasks: users_and_groups.yml
+- debug:
+    var: hostvars[inventory_hostname]
+  tags:
+  - debug
+
+- name: Import tasks for groups management
+  import_tasks: groups.yml
+  tags:
+  - windows_bootstrap_groups
+
+- name: Import tasks for users management
+  import_tasks: users.yml
   tags:
   - windows_bootstrap_users
+
 
 - name: Add or Remove Windows Feature
   import_tasks: features.yml

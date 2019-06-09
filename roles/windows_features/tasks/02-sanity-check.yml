@@ -1,0 +1,50 @@
+---
+# --------------------------------------------------------------------------------
+# Sanity check
+# --------------------------------------------------------------------------------
+- name: windows features sanity check
+  block:
+  - name: Retrieve windows features
+    win_shell: Get-WindowsFeature | ConvertTo-Json
+    register: get_windows_features_results
+    changed_when: false
+
+
+  - name: Set Windows feature facts
+    set_fact:
+      windows_features_status: '{{ get_windows_features_results.stdout
+                                   | default("[]")
+                                   | from_json
+                                   | selectattr("Installed", "equalto", true)
+                                   | list
+                                   | default("[]")
+                                }}'
+
+  - name: Display Installed windows features
+    debug:
+      var:       windows_features_status
+      verbosity: '{{ win_features_diagnostic_level_debug }}'
+
+  - name: Check missing expected features
+    include_tasks: 03-assert.yml
+    vars:
+      features_references: '{{ windows_features_current_list }}'
+      features_to_check:   '{{ windows_features_expected_list  }}'
+      error_message:       'Missing expected feature'
+
+  - name: Check Unexpected features
+    include_tasks: 03-assert.yml
+    vars:
+      features_references: '{{ windows_features_expected_list }}'
+      features_to_check:   '{{ windows_features_current_list  }}'
+      error_message:       'Found unexpected feature'
+
+  - name: Fail if windows features have errors
+    fail:
+      msg: "Windows features are not in the desired state"
+    when: windows_features_error_list | default([]) | length > 0
+
+  tags:
+  - sanity_check
+  - sanity_check_windows_bootstrap
+  - sanity_check_windows_bootstrap_users

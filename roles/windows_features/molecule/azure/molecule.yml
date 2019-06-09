@@ -1,0 +1,36 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: delegated
+lint:
+  name: yamllint
+platforms:
+  - name: utwinfeatures
+    resource_group_name:              'ut_automation'
+    location:                         'westeurope'
+    virtual_network_name:             'ut_automation_vnet'
+    virtual_network_address_prefixes: '10.10.0.0/16'
+    subnet_name:                      'ut_automation_subnet'
+    subnet_address_prefix_cidr:       '10.10.1.0/24'
+provisioner:
+  name: ansible
+  connection_options:
+    ansible_become: false
+    ansible_user: molecule
+    ansible_password: 'loc@lPwd.1loc@lPwd.1'
+    ansible_port: 5986
+    # ansible_host: 13.80.125.13
+    ansible_connection: winrm
+    ansible_winrm_transport: basic
+    ansible_winrm_server_cert_validation: ignore
+    ansible_winrm_scheme: https
+  log: true
+  lint:
+    name: ansible-lint
+scenario:
+  name: azure
+verifier:
+  name: testinfra
+  lint:
+    name: flake8

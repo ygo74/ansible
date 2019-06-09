@@ -1,0 +1,27 @@
+---
+# --------------------------------------------------------------------------------
+# Configure
+# --------------------------------------------------------------------------------
+- name: Configure features
+  block:
+
+    - name: Display Expected Windows Feature configuration
+      debug:
+        var:       windows_features_all
+        verbosity: '{{ win_features_diagnostic_level_debug }}'
+
+    - name: Add or Remove feature
+      win_feature:
+        name:                     '{{ item.name }}'
+        state:                    '{{ item.state                    | default("present") }}'
+        include_sub_features:     '{{ item.include_sub_features     | default(False) }}'
+        include_management_tools: '{{ item.include_management_tools | default(False) }}'
+      register: win_feature_configuration_results
+      loop: '{{ windows_features_all }}'
+
+    - name: Display Windows Feature configuration results
+      debug:
+        var:       win_feature_configuration_results
+        verbosity: '{{ win_features_diagnostic_level_debug }}'
+  tags:
+    - install_from_scratch

@@ -1,0 +1,7 @@
+---
+# tasks file for windows_features
+- name: Import tasks to configure windows features
+  import_tasks: 01-configure.yml
+
+- name: Sanity check of windows features
+  import_tasks: 02-sanity-check.yml
