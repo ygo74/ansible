@@ -88,7 +88,8 @@
           'user': "{{ admin_user }}",
           'password': "{{ admin_password }}",
           'port': "5986",
-          'connection': "winrm"}
+          'connection': "winrm",
+          'identity_file': ""}
       with_items: "{{ azure_jobs.results }}"
       register: instance_config_dict
       when: server.changed | bool

@@ -4,20 +4,19 @@
   connection: local
   gather_facts: false
   no_log: "{{ not (lookup('env', 'MOLECULE_DEBUG') | bool or molecule_yml.provisioner.log|default(false) | bool) }}"
-  vars:
-    resource_group_name: molecule
+
   tasks:
     - name: Destroy molecule instance(s)
       azure_rm_virtualmachine:
-        resource_group: "{{ resource_group_name }}"
+        resource_group: "{{ item.resource_group_name }}"
         name: "{{ item.name }}"
         state: absent
-        remove_on_absent:
-          - all_autocreated
         # remove_on_absent:
-        #   - network_interfaces
-        #   - virtual_storage
-        #   - public_ips
+        #   - all_autocreated
+        remove_on_absent:
+          - network_interfaces
+          - virtual_storage
+          - public_ips
       register: server
       with_items: "{{ molecule_yml.platforms }}"
       async: 7200

@@ -22,6 +22,6 @@
     - name: Display Windows Feature configuration results
       debug:
         var:       win_feature_configuration_results
-        verbosity: '{{ win_features_diagnostic_level_debug }}'
+        verbosity: '{{ win_features_diagnostic_level_info }}'
   tags:
     - install_from_scratch

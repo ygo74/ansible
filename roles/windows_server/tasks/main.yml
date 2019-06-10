@@ -6,7 +6,7 @@
 
 - name: Load a variable file based on the OS type, or a default if not found. Using free-form to specify the file.
   include_vars: "{{ lookup('first_found', possible_files) }}"
-  when: ansible_os_name = 'Microsoft Windows Server 2016 Datacenter'
+  when: ansible_os_name == 'Microsoft Windows Server 2016 Datacenter'
   vars:
     possible_files:
       - "vars/windows-2016.yml"

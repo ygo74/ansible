@@ -1,0 +1,13 @@
+---
+server:
+  disks:
+    system:
+    data:
+    swap:
+  features:
+  users:
+  groups:
+  services:
+  firewall:
+    allow:
+    deny:
