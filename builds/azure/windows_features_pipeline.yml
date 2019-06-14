@@ -35,7 +35,7 @@ jobs:
       azureSubscription: 'Visual Studio Enterprise (62177529-73f0-4e11-a584-5d3526dc6999)'
       scriptLocation: 'inlineScript'
       #scriptPath: # Required when scriptLocation == ScriptPath
-      inlineScript: 'echo $(SQLPassword); az account list'
+      inlineScript: 'echo $(SQLPassword);export; az account list'
       #arguments: # Optional
       #addSpnToEnvironment: false # Optional
       #useGlobalConfig: false # Optional
