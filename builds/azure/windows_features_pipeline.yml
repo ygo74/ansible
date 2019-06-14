@@ -22,6 +22,20 @@ jobs:
         versionSpec: '2.7'
         architecture: 'x64'
 
+  # Azure CLI
+  # Run Azure CLI commands against an Azure subscription in a Shell script when runnning on Linux agent or Batch script when running on Windows agent.
+  - task: AzureCLI@1
+    inputs:
+      azureSubscription: 'Visual Studio Enterprise (62177529-73f0-4e11-a584-5d3526dc6999)'
+      scriptLocation: 'inlineScript'
+      #scriptPath: # Required when scriptLocation == ScriptPath
+      inlineScript: 'az account list'
+      #arguments: # Optional
+      #addSpnToEnvironment: false # Optional
+      #useGlobalConfig: false # Optional
+      #workingDirectory: # Optional
+      #failOnStandardError: false # Optional
+
   - task: Bash@3
     inputs:
         targetType: 'inline'
