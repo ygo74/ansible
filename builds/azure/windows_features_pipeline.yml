@@ -44,14 +44,14 @@ jobs:
           find roles/windows_features/ -type f -not -path '*/\.*' -exec grep -Il '.' {} \; | xargs -d '\n' -L 1 dos2unix -k
     displayName: 'Convert files dos2unix'
 
-  - task: Bash@3
-    inputs:
-        targetType: 'inline'
-        workingDirectory: roles/windows_features
-        script: |
-          source ../../my_env/bin/activate
-          molecule lint -s azure
-    displayName: 'Molecule lint'
+  # - task: Bash@3
+  #   inputs:
+  #       targetType: 'inline'
+  #       workingDirectory: roles/windows_features
+  #       script: |
+  #         source ../../my_env/bin/activate
+  #         molecule lint -s azure
+  #   displayName: 'Molecule lint'
 
   - task: Bash@3
     inputs:
