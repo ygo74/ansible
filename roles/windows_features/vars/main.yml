@@ -1,13 +1,13 @@
 ---
 # vars file for windows_features
 
-#All windows features configuration
+# All windows features configuration
 windows_features_all:           '{{ windows_features_os
                                     | union(windows_features_roles)
                                     | union(windows_features_application)
                                  }}'
 
-#Expected windows features from configuration
+# Expected windows features from configuration
 windows_features_expected_list: '{{ windows_features_all
                                     | selectattr("status", "equalto", "present")
                                     | map(attribute="name")
@@ -15,10 +15,9 @@ windows_features_expected_list: '{{ windows_features_all
                                     | default([])
                                   }}'
 
-#Current windows feature list
+# Current windows feature list
 windows_features_current_list:  '{{ windows_features_status
                                     | map(attribute="Name")
                                     | list
                                     | default([])
                                   }}'
-

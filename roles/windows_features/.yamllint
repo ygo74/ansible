@@ -11,3 +11,17 @@ rules:
   # NOTE(retr0h): Templates no longer fail this lint rule.
   #               Uncomment if running old Molecule templates.
   # truthy: disable
+  colons:
+    max-spaces-after: -1
+    level: error
+  commas:
+    max-spaces-after: -1
+    level: error
+  indentation:
+    indent-sequences: true
+    #Fix this ignore path
+    ignore: |
+      molecule.yml
+      playbook.yml
+  key-duplicates: enable
+

@@ -1,3 +1,7 @@
+---
+# --------------------------------------------------------------------------------
+# Assert list items agains a reference list
+# --------------------------------------------------------------------------------
 - name: Check the list of features with a reference list
   block:
     - name: Fail if we found features not in the reference list

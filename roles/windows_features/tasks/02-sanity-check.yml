@@ -45,6 +45,6 @@
     when: windows_features_error_list | default([]) | length > 0
 
   tags:
-  - sanity_check
-  - sanity_check_windows_bootstrap
-  - sanity_check_windows_bootstrap_users
+    - sanity_check
+    - sanity_check_windows_bootstrap
+    - sanity_check_windows_bootstrap_users

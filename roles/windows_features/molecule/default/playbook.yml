@@ -31,10 +31,6 @@
       - name:   'DSC-Service'
         status: 'present'
 
-
-
-
-
     windows_features_roles:       []
     windows_features_application: []
     win_features_diagnostic_level_debug: 0
