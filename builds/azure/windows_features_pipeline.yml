@@ -59,7 +59,7 @@ jobs:
         workingDirectory: roles/windows_features
         script: |
           source ../../my_env/bin/activate
-          molecule create  -s azure
+          molecule --debug create  -s azure
     displayName: 'Create test infrastructure'
 
   - task: Bash@3
