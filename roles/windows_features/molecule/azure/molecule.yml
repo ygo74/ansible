@@ -13,6 +13,7 @@ platforms:
     virtual_network_address_prefixes: '10.10.0.0/16'
     subnet_name:                      'ut_automation_subnet'
     subnet_address_prefix_cidr:       '10.10.1.0/24'
+    storage_name:                     'utautomationstorage'
 provisioner:
   name: ansible
   connection_options:

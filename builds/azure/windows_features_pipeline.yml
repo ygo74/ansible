@@ -5,7 +5,7 @@ trigger:
     - refs/tags/*
   paths:
     include:
-    - roles/windows_bootstrap/*
+    - roles/windows_features/*
     - builds/*
     exclude:
     - /**/*.md
@@ -16,18 +16,6 @@ jobs:
     vmImage: 'Ubuntu-16.04'
 
   steps:
-
-  - task: AzureResourceGroupDeployment@2
-    displayName: 'Azure Deployment:Create Or Update Resource Group action on AnsibleUnitTest'
-    inputs:
-      azureSubscription: 'Visual Studio Enterprise (62177529-73f0-4e11-a584-5d3526dc6999)'
-      resourceGroupName: AnsibleUnitTest
-      location: 'France Central'
-      templateLocation: 'URL of the file'
-      csmFileLink: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-windows/azuredeploy.json'
-      csmParametersFileLink: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-windows/azuredeploy.parameters.json'
-      overrideParameters: '-adminUsername ansibleUnitTest -adminPassword Passw@rd.1 -dnsLabelPrefix ygo74-ansible'
-      enableDeploymentPrerequisites: ConfigureVMwithWinRM
 
   - task: UsePythonVersion@0
     inputs:
@@ -43,41 +31,42 @@ jobs:
           python -m virtualenv my_env
           source my_env/bin/activate
           python -m pip install molecule docker
-          pip install docker-py
+          pip2 install ansible[azure]
+          pip2 install docker-py
           sudo apt-get install dos2unix
     displayName: 'Install tools'
 
   - task: Bash@3
     inputs:
         targetType: 'inline'
-        workingDirectory: roles/windows_bootstrap
+        workingDirectory: roles/windows_features
         script: |
-          find roles/windows_bootstrap/ -type f -not -path '*/\.*' -exec grep -Il '.' {} \; | xargs -d '\n' -L 1 dos2unix -k
+          find roles/windows_features/ -type f -not -path '*/\.*' -exec grep -Il '.' {} \; | xargs -d '\n' -L 1 dos2unix -k
     displayName: 'Convert files dos2unix'
 
   - task: Bash@3
     inputs:
         targetType: 'inline'
-        workingDirectory: roles/windows_bootstrap
+        workingDirectory: roles/windows_features
         script: |
           source ../../my_env/bin/activate
-          molecule lint -s windows
+          molecule lint -s azure
     displayName: 'Molecule lint'
 
   - task: Bash@3
     inputs:
         targetType: 'inline'
-        workingDirectory: roles/windows_bootstrap
+        workingDirectory: roles/windows_features
         script: |
           source ../../my_env/bin/activate
-          molecule create  -s windows
+          molecule create  -s azure
     displayName: 'Create test infrastructure'
 
   - task: Bash@3
     inputs:
         targetType: 'inline'
-        workingDirectory: roles/windows_bootstrap
+        workingDirectory: roles/windows_features
         script: |
           source ../../my_env/bin/activate
-          molecule converge -s windows
-    displayName: 'Execute windows_bootstrap roles'
+          molecule converge -s azure
+    displayName: 'Execute windows_features roles'
