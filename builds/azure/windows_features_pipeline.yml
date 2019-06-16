@@ -26,7 +26,7 @@ jobs:
     inputs:
       azureSubscription: 'Visual Studio Enterprise (62177529-73f0-4e11-a584-5d3526dc6999)'
       keyVaultName:  'mesfVault'
-      secretsFilter: 'SQLPassword'
+      secretsFilter: 'TestPassword'
 
   # Azure CLI
   # Run Azure CLI commands against an Azure subscription in a Shell script when runnning on Linux agent or Batch script when running on Windows agent.
@@ -35,7 +35,7 @@ jobs:
       azureSubscription: 'Visual Studio Enterprise (62177529-73f0-4e11-a584-5d3526dc6999)'
       scriptLocation: 'inlineScript'
       #scriptPath: # Required when scriptLocation == ScriptPath
-      inlineScript: 'echo $(SQLPassword);export; az account list'
+      inlineScript: 'echo $(TestPassword);export; az account list'
       #arguments: # Optional
       #addSpnToEnvironment: false # Optional
       #useGlobalConfig: false # Optional
