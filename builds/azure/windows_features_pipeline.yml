@@ -89,3 +89,13 @@ jobs:
           source ../../my_env/bin/activate
           molecule converge -s azure
     displayName: 'Execute windows_features roles'
+
+  - task: Bash@3
+    inputs:
+        targetType: 'inline'
+        workingDirectory: roles/windows_features
+        script: |
+          source ../../my_env/bin/activate
+          molecule destroy -s azure
+    condition: always()
+    displayName: 'Destroy windows_features vm'
