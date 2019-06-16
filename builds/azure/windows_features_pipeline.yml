@@ -50,9 +50,7 @@ jobs:
           python -m pip install virtualenv
           python -m virtualenv my_env
           source my_env/bin/activate
-          python -m pip install molecule docker
-          pip2 install ansible[azure]
-          pip2 install docker-py
+          python -m pip2 install -r venv_requirements.txt
           sudo apt-get install dos2unix
     displayName: 'Install tools'
 
