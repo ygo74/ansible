@@ -79,6 +79,7 @@ jobs:
         workingDirectory: roles/windows_features
         script: |
           source ../../my_env/bin/activate
+          az login --service-principal -u a6439ce4-97bf-4d5c-9538-fdacd0441e68 -p $(TestPassword) --tenant bed92f93-1e03-4d54-b10e-467688282e13
           molecule --debug create  -s azure
     displayName: 'Create test infrastructure'
 
