@@ -7,7 +7,7 @@
         password:   '{{ item.password }}'
         groups:
           - Users
-        Ensure:     '{{ item.state | default("Present")}}'
+        Ensure:     '{{ item.state | default("Present") }}'
       with_items:
         - '{{ windows_bootstrap_users }}'
       register: user_status
