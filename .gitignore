@@ -3,3 +3,5 @@ roles/windows_bootstrap/molecule/reports/junit-windows-out.xml
 roles/windows_bootstrap/molecule/reports/junit-windows-out.xml
 roles/windows_bootstrap/molecule/windows/pytestdebug.log
 roles/windows_bootstrap/molecule/windows/tests/__pycache__/test_default.cpython-27-PYTEST.pyc
+roles/windows_bootstrap/molecule/azure/tests/test_default.py
+roles/windows_bootstrap/molecule/azure/tests/test_default.pyc

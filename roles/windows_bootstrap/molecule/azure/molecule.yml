@@ -6,7 +6,7 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: utwinfeatures
+  - name: utwinbootstrap
     resource_group_name:              'ut_automation'
     location:                         'westeurope'
     virtual_network_name:             'ut_automation_vnet'

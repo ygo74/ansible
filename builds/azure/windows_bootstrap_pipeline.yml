@@ -6,7 +6,7 @@ trigger:
   paths:
     include:
     - roles/windows_bootstrap/*
-    - builds/*
+    - builds/azure/windows_bootstrap.yml
     exclude:
     - /**/*.md
 
@@ -17,22 +17,16 @@ jobs:
 
   steps:
 
-  - task: AzureResourceGroupDeployment@2
-    displayName: 'Azure Deployment:Create Or Update Resource Group action on AnsibleUnitTest'
-    inputs:
-      azureSubscription: 'Visual Studio Enterprise (62177529-73f0-4e11-a584-5d3526dc6999)'
-      resourceGroupName: AnsibleUnitTest
-      location: 'France Central'
-      templateLocation: 'URL of the file'
-      csmFileLink: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-windows/azuredeploy.json'
-      csmParametersFileLink: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-windows/azuredeploy.parameters.json'
-      overrideParameters: '-adminUsername ansibleUnitTest -adminPassword Passw@rd.1 -dnsLabelPrefix ygo74-ansible'
-      enableDeploymentPrerequisites: ConfigureVMwithWinRM
-
   - task: UsePythonVersion@0
     inputs:
         versionSpec: '2.7'
         architecture: 'x64'
+
+  - task: AzureKeyVault@1
+    inputs:
+      azureSubscription: 'Visual Studio Enterprise (62177529-73f0-4e11-a584-5d3526dc6999)'
+      keyVaultName:  'mesfVault'
+      secretsFilter: 'TestPassword'
 
   - task: Bash@3
     inputs:
@@ -42,8 +36,7 @@ jobs:
           python -m pip install virtualenv
           python -m virtualenv my_env
           source my_env/bin/activate
-          python -m pip install molecule docker
-          pip install docker-py
+          python -m pip install -r venv_requirements.txt
           sudo apt-get install dos2unix
     displayName: 'Install tools'
 
@@ -61,7 +54,7 @@ jobs:
         workingDirectory: roles/windows_bootstrap
         script: |
           source ../../my_env/bin/activate
-          molecule lint -s windows
+          molecule lint -s azure
     displayName: 'Molecule lint'
 
   - task: Bash@3
@@ -70,7 +63,8 @@ jobs:
         workingDirectory: roles/windows_bootstrap
         script: |
           source ../../my_env/bin/activate
-          molecule create  -s windows
+          az login --service-principal -u a6439ce4-97bf-4d5c-9538-fdacd0441e68 -p $(TestPassword) --tenant bed92f93-1e03-4d54-b10e-467688282e13
+          molecule --debug create  -s azure
     displayName: 'Create test infrastructure'
 
   - task: Bash@3
@@ -79,5 +73,15 @@ jobs:
         workingDirectory: roles/windows_bootstrap
         script: |
           source ../../my_env/bin/activate
-          molecule converge -s windows
+          molecule converge -s azure
     displayName: 'Execute windows_bootstrap roles'
+
+  - task: Bash@3
+    inputs:
+        targetType: 'inline'
+        workingDirectory: roles/windows_bootstrap
+        script: |
+          source ../../my_env/bin/activate
+          molecule destroy -s azure
+    condition: always()
+    displayName: 'Destroy windows_bootstrap vm'

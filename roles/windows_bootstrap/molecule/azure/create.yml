@@ -1,0 +1,123 @@
+---
+- name: Create
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  no_log: "{{ not (lookup('env', 'MOLECULE_DEBUG') | bool or molecule_yml.provisioner.log|default(false) | bool) }}"
+  vars:
+    # resource_group_name: ansible_unittest
+    # resource_group_name: '{{ driver.resource_group_name }}'
+    # location: westeurope
+    admin_user: molecule
+    admin_password: 'loc@lPwd.1loc@lPwd.1'
+    # virtual_network_name: ansible_unittest_vnet
+    # subnet_name: ansible_unittest_subnet
+    winrm_enable_script: SQBuAHYAbwBrAGUALQBFAHgAcAByAGUAcwBzAGkAbwBuACAALQBDAG8AbQBtAGEAbgBkACAAKAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE4AZQB0AC4AVwBlAGIAQwBsAGkAZQBuAHQAKQAuAEQAbwB3AG4AbABvAGEAZABTAHQAcgBpAG4AZwAoACcAaAB0AHQAcABzADoALwAvAHIAYQB3AC4AZwBpAHQAaAB1AGIAdQBzAGUAcgBjAG8AbgB0AGUAbgB0AC4AYwBvAG0ALwBhAG4AcwBpAGIAbABlAC8AYQBuAHMAaQBiAGwAZQAvAGQAZQB2AGUAbAAvAGUAeABhAG0AcABsAGUAcwAvAHMAYwByAGkAcAB0AHMALwBDAG8AbgBmAGkAZwB1AHIAZQBSAGUAbQBvAHQAaQBuAGcARgBvAHIAQQBuAHMAaQBiAGwAZQAuAHAAcwAxACcAKQApADsAIABFAG4AYQBiAGwAZQAtAFcAUwBNAGEAbgBDAHIAZQBkAFMAUwBQACAALQBSAG8AbABlACAAUwBlAHIAdgBlAHIAIAAtAEYAbwByAGMAZQA=
+
+  tasks:
+    - name: Create resource group
+      azure_rm_resourcegroup:
+        name:     "{{ item.resource_group_name }}"
+        location: "{{ item.location }}"
+      with_items:
+        - "{{ [] + [molecule_yml.platforms | first] }}"
+
+    - name: Create virtual network
+      azure_rm_virtualnetwork:
+        resource_group:   "{{ item.resource_group_name              }}"
+        name:             "{{ item.virtual_network_name             }}"
+        address_prefixes: "{{ item.virtual_network_address_prefixes }}"
+      with_items:
+        - "{{ [] + [molecule_yml.platforms | first] }}"
+
+    - name: Create subnet
+      azure_rm_subnet:
+        resource_group:       "{{ item.resource_group_name        }}"
+        name:                 "{{ item.subnet_name                }}"
+        address_prefix_cidr:  "{{ item.subnet_address_prefix_cidr }}"
+        virtual_network_name: "{{ item.virtual_network_name       }}"
+      with_items:
+        - "{{ [] + [molecule_yml.platforms | first] }}"
+
+    - name: Create Storage account
+      azure_rm_storageaccount:
+        resource_group:  "{{ item.resource_group_name                    }}"
+        name:            "{{ item.storage_name                           }}"
+        type:            "{{ item.storage_type | default('Standard_LRS') }}"
+      with_items:
+        - "{{ [] + [molecule_yml.platforms | first] }}"
+
+    - name: Create molecule instance(s)
+      azure_rm_virtualmachine:
+        resource_group: "{{ item.resource_group_name }}"
+        name: "{{ item.name }}"
+        os_type: Windows
+        vm_size: Standard_DS1_v2
+        admin_username: "{{ admin_user }}"
+        admin_password: "{{ admin_password }}"
+        public_ip_allocation_method: Dynamic
+        storage_account_name:   "{{ item.storage_name }}"
+        storage_container_name: "{{ item.storage_name }}"
+        image:
+          offer: WindowsServer
+          publisher: MicrosoftWindowsServer
+          sku: '2016-Datacenter'
+          version: latest
+      register: server
+      with_items: "{{ molecule_yml.platforms }}"
+      async: 7200
+      poll: 0
+
+    - name: Wait for instance(s) creation to complete
+      async_status:
+        jid: "{{ item.ansible_job_id }}"
+      register: azure_jobs
+      until: azure_jobs.finished
+      retries: 300
+      with_items: "{{ server.results }}"
+
+    - name: create Azure vm extension to enable HTTPS WinRM listener
+      azure_rm_virtualmachine_extension:
+        name: winrm-extension
+        resource_group: "{{ item.resource_group_name }}"
+        virtual_machine_name: "{{ item.name }}"
+        publisher: Microsoft.Compute
+        virtual_machine_extension_type: CustomScriptExtension
+        type_handler_version: 1.9
+        settings: '{"commandToExecute": "powershell.exe -ExecutionPolicy ByPass -EncodedCommand {{winrm_enable_script}}"}'
+        auto_upgrade_minor_version: true
+      with_items: "{{ molecule_yml.platforms }}"
+
+    # Mandatory configuration for Molecule to function.
+
+    - name: Populate instance config dict
+      set_fact:
+        instance_conf_dict: {
+          'instance': "{{ item.ansible_facts.azure_vm.name }}",
+          'address': "{{ item.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}",
+          'user': "{{ admin_user }}",
+          'password': "{{ admin_password }}",
+          'port': "5986",
+          'connection': "winrm",
+          'identity_file': ""}
+      with_items: "{{ azure_jobs.results }}"
+      register: instance_config_dict
+      when: server.changed | bool
+
+    - name: Convert instance config dict to a list
+      set_fact:
+        instance_conf: "{{ instance_config_dict.results | map(attribute='ansible_facts.instance_conf_dict') | list }}"
+      when: server.changed | bool
+
+    - name: Dump instance config
+      copy:
+        content: "{{ instance_conf | to_json | from_json | molecule_to_yaml | molecule_header }}"
+        dest: "{{ molecule_instance_config }}"
+      when: server.changed | bool
+
+    - name: Wait for winrm
+      wait_for:
+        port: "5986"
+        host: "{{ item.address }}"
+        delay: 10
+      with_items: "{{ lookup('file', molecule_instance_config) | molecule_from_yaml }}"

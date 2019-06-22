@@ -14,9 +14,9 @@
       docker_host: "{{ item.docker_host | default(lookup('env', 'DOCKER_HOST') or 'unix://var/run/docker.sock') }}"
     with_items: "{{ molecule_yml.platforms }}"
     when:
-    - item.registry is defined
-    - item.registry.credentials is defined
-    - item.registry.credentials.username is defined
+      - item.registry is defined
+      - item.registry.credentials is defined
+      - item.registry.credentials.username is defined
 
   - name: Create Dockerfiles from image names
     template:
@@ -44,8 +44,8 @@
       pull: "{{ item.item.pull | default(omit) }}"
     with_items: "{{ platforms.results }}"
     when:
-    - platforms.changed or docker_images.results | map(attribute='images') | select('equalto', []) | list | count >= 0
-    - not item.item.pre_build_image | default(false)
+      - platforms.changed or docker_images.results | map(attribute='images') | select('equalto', []) | list | count >= 0
+      - not item.item.pre_build_image | default(false)
 
   - name: Create docker network(s)
     docker_network:

@@ -24,6 +24,8 @@
       enabled:  false
     - username: 'myadmin'
       enabled:  true
+    - username: 'molecule'
+      enabled:  true
 
 
   roles:
