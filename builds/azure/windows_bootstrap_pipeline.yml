@@ -6,7 +6,7 @@ trigger:
   paths:
     include:
     - roles/windows_bootstrap/*
-    - builds/azure/windows_bootstrap.yml
+    - builds/azure/windows_bootstrap_pipeline.yml
     exclude:
     - /**/*.md
 
