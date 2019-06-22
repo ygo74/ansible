@@ -1,15 +1,14 @@
 ---
-
 windows_bootstrap_features:           []
 windows_bootstrap_users:              []
 windows_bootstrap_groups:              []
 windows_bootstrap_powershell_modules: []
 
-#--------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------
 # Calculated variables
-#--------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------
 
-#Find or not a user in the list of allowed user
+# Find or not a user in the list of allowed user
 windows_bootstrap_checked_user: >-
   {{ (windows_bootstrap_default_allowed_users
        | union(windows_bootstrap_users
@@ -19,7 +18,7 @@ windows_bootstrap_checked_user: >-
      )[0] | default({})
   }}
 
-#Find or not a user in the list of allowed user
+# Find or not a user in the list of allowed user
 windows_bootstrap_checked_group: >-
   {{ (windows_bootstrap_default_allowed_groups
        | union(windows_bootstrap_groups

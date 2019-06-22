@@ -6,4 +6,4 @@
       name: '{{ item.name }}'
       state: present
     with_items:
-    - '{{ windows_bootstrap_powershell_modules }}'
+      - '{{ windows_bootstrap_powershell_modules }}'

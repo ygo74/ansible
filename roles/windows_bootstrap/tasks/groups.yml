@@ -7,7 +7,7 @@
       description: '{{ item.description |default(omit) }}'
       state:       '{{ item.state | default("Present")}}'
     with_items:
-    - '{{ windows_bootstrap_groups }}'
+      - '{{ windows_bootstrap_groups }}'
     register: groups_status
 
   - name: Display groups_status
@@ -17,45 +17,44 @@
 
 - name: Local groups sanity check
   block:
-  - name: Retrieve Local Groups
-    win_shell: Get-LocalGroup | ConvertTo-Json
-    register: get_local_groups_results
-    changed_when: false
+    - name: Retrieve Local Groups
+      win_shell: Get-LocalGroup | ConvertTo-Json
+      register: get_local_groups_results
+      changed_when: false
 
 
-  - name: Set Local Groups facts
-    set_fact:
-      win_local_groups: '{{ get_local_groups_results.stdout |default("[]") | from_json }}'
+    - name: Set Local Groups facts
+      set_fact:
+        win_local_groups: '{{ get_local_groups_results.stdout |default("[]") | from_json }}'
 
-  - name: Display Local Groups
-    debug:
-      var:       win_local_groups
-      verbosity: '{{ windows_bootstrap_diagnostic_level_debug }}'
+    - name: Display Local Groups
+      debug:
+        var:       win_local_groups
+        verbosity: '{{ windows_bootstrap_diagnostic_level_debug }}'
 
-  - name: Display Local Groups
-    debug:
-      var:       item.Name
-      verbosity: '{{ windows_bootstrap_diagnostic_level_debug }}'
-    loop: '{{ win_local_groups }}'
+    - name: Display Local Groups
+      debug:
+        var:       item.Name
+        verbosity: '{{ windows_bootstrap_diagnostic_level_debug }}'
+      loop: '{{ win_local_groups }}'
 
-  - name: Check Allowed existing local Groups
-    assert:
+    - name: Check Allowed existing local Groups
+      assert:
         that:
-        - windows_bootstrap_checked_group.name | default("N/A") == item.Name
+          - windows_bootstrap_checked_group.name | default("N/A") == item.Name
         fail_msg:    'Local Group "{{ item.Name }}" is not allowed'
         success_msg: 'Local Group "{{ item.Name }}" is allowed'
-    loop: '{{ win_local_groups }}'
+      loop: '{{ win_local_groups }}'
 
-  - name: Check expected local Groups
-    assert:
+    - name: Check expected local Groups
+      assert:
         that:
-        - win_local_groups | selectattr("Name", "equalto", item.name) | list | length > 0
+          - win_local_groups | selectattr("Name", "equalto", item.name) | list | length > 0
         fail_msg:    'Local Group "{{ item.name }}" is missing'
         success_msg: 'Local Group "{{ item.name }}" exists'
-    loop: '{{ windows_bootstrap_groups | selectattr("state", "equalto", "Present") | list }}'
+      loop: '{{ windows_bootstrap_groups | selectattr("state", "equalto", "Present") | list }}'
 
   tags:
-  - sanity_check
-  - sanity_check_windows_bootstrap
-  - sanity_check_windows_bootstrap_groups
-
+    - sanity_check
+    - sanity_check_windows_bootstrap
+    - sanity_check_windows_bootstrap_groups

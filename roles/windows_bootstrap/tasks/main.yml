@@ -3,25 +3,25 @@
 - debug:
     var: hostvars[inventory_hostname]
   tags:
-  - debug
+    - debug
 
 - name: Import tasks for groups management
   import_tasks: groups.yml
   tags:
-  - windows_bootstrap_groups
+    - windows_bootstrap_groups
 
 - name: Import tasks for users management
   import_tasks: users.yml
   tags:
-  - windows_bootstrap_users
+    - windows_bootstrap_users
 
 
 - name: Add or Remove Windows Feature
   import_tasks: features.yml
   tags:
-  - windows_bootstrap_features
+    - windows_bootstrap_features
 
 - name: Add or Remove powershell modules
   import_tasks: posh_modules.yml
   tags:
-  - windows_bootstrap_powershell
+    - windows_bootstrap_powershell

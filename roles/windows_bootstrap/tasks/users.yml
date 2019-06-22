@@ -1,64 +1,62 @@
 ---
 - name: Create Local users
   block:
-  - name: Create Local Users
-    win_user:
-      name:       '{{ item.username }}'
-      password:   '{{ item.password }}'
-      groups:
-      - Users
-      Ensure:     '{{ item.state | default("Present")}}'
-    with_items:
-    - '{{ windows_bootstrap_users }}'
-    register: user_status
+    - name: Create Local Users
+      win_user:
+        name:       '{{ item.username }}'
+        password:   '{{ item.password }}'
+        groups:
+          - Users
+        Ensure:     '{{ item.state | default("Present")}}'
+      with_items:
+        - '{{ windows_bootstrap_users }}'
+      register: user_status
 
-  - name: Display user_status
-    debug:
-      var: user_status
-      verbosity: '{{ windows_bootstrap_diagnostic_level_debug }}'
+    - name: Display user_status
+      debug:
+        var: user_status
+        verbosity: '{{ windows_bootstrap_diagnostic_level_debug }}'
 
 - name: Local users sanity check
   block:
-  - name: Retrieve Local Users
-    win_shell: Get-LocalUser | ConvertTo-Json
-    register: get_local_user_results
-    changed_when: false
+    - name: Retrieve Local Users
+      win_shell: Get-LocalUser | ConvertTo-Json
+      register: get_local_user_results
+      changed_when: false
 
+    - name: Set Local Users facts
+      set_fact:
+        win_local_users: '{{ get_local_user_results.stdout |default("[]") | from_json }}'
 
-  - name: Set Local Users facts
-    set_fact:
-      win_local_users: '{{ get_local_user_results.stdout |default("[]") | from_json }}'
+    - name: Display Local Users
+      debug:
+        var:       win_local_users
+        verbosity: '{{ windows_bootstrap_diagnostic_level_debug }}'
 
-  - name: Display Local Users
-    debug:
-      var:       win_local_users
-      verbosity: '{{ windows_bootstrap_diagnostic_level_debug }}'
+    - name: Display Local Users
+      debug:
+        var:       windows_bootstrap_checked_user
+        verbosity: '{{ windows_bootstrap_diagnostic_level_debug }}'
+      loop: '{{ win_local_users }}'
 
-  - name: Display Local Users
-    debug:
-      var:       windows_bootstrap_checked_user
-      verbosity: '{{ windows_bootstrap_diagnostic_level_debug }}'
-    loop: '{{ win_local_users }}'
-
-  - name: Check Allowed existing local Users
-    assert:
+    - name: Check Allowed existing local Users
+      assert:
         that:
-        - windows_bootstrap_checked_user.username | default("N/A") == item.Name
-        - windows_bootstrap_checked_user.enabled  | default("N/A") == item.Enabled
+          - windows_bootstrap_checked_user.username | default("N/A") == item.Name
+          - windows_bootstrap_checked_user.enabled  | default("N/A") == item.Enabled
         fail_msg:    'Local User {{ item.Name }} is not allowed'
         success_msg: 'Local User {{ item.Name }} is allowed'
-    loop: '{{ win_local_users }}'
+      loop: '{{ win_local_users }}'
 
-  - name: Check expected local Users
-    assert:
+    - name: Check expected local Users
+      assert:
         that:
-        - win_local_users | selectattr("Name", "equalto", item.username) | list | length > 0
+          - win_local_users | selectattr("Name", "equalto", item.username) | list | length > 0
         fail_msg:    'Local User {{ item.username }} is missing'
         success_msg: 'Local User {{ item.username }} exists'
-    loop: '{{ windows_bootstrap_users }}'
+      loop: '{{ windows_bootstrap_users }}'
 
   tags:
-  - sanity_check
-  - sanity_check_windows_bootstrap
-  - sanity_check_windows_bootstrap_users
-
+    - sanity_check
+    - sanity_check_windows_bootstrap
+    - sanity_check_windows_bootstrap_users

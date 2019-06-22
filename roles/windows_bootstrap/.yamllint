@@ -18,10 +18,9 @@ rules:
     max-spaces-after: -1
     level: error
   indentation:
-    indent-sequences: false
+    indent-sequences: true
     #Fix this ignore path
     ignore: |
       molecule.yml
       playbook.yml
   key-duplicates: enable
-

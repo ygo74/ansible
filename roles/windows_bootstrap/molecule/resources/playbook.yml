@@ -16,28 +16,27 @@
     # ansible_winrm_scheme: http
 
     windows_bootstrap_default_allowed_users:
-    - username: 'Administrator'
-      enabled:  false
-    - username: 'DefaultAccount'
-      enabled:  false
-    - username: 'Guest'
-      enabled:  false
-    - username: 'myadmin'
-      enabled:  true
-    - username: 'molecule'
-      enabled:  true
+      - username: 'Administrator'
+        enabled:  false
+      - username: 'DefaultAccount'
+        enabled:  false
+      - username: 'Guest'
+        enabled:  false
+      - username: 'myadmin'
+        enabled:  true
+      - username: 'molecule'
+        enabled:  true
 
 
   roles:
     - role: windows_bootstrap
       windows_bootstrap_users:
-      - username: 'test1'
-        password: 'bigPw@d.1'
-        enabled:  true
-        state:    'Present'
+        - username: 'test1'
+          password: 'bigPw@d.1'
+          enabled:  true
+          state:    'Present'
       windows_bootstrap_groups:
-      - name: myApp
-        state: Present
-      - name: myApp2
-        state: Absent
-
+        - name: myApp
+          state: Present
+        - name: myApp2
+          state: Absent
