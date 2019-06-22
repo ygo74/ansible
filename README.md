@@ -5,7 +5,7 @@
 |--------|------------|
 | windows_bootstrap | [![Build Status](https://dev.azure.com/ygo74/ansible/_apis/build/status/ansible-CI?branchName=master)](https://dev.azure.com/ygo74/ansible/_build/latest?definitionId=12&branchName=master) |
 | windows_features | [![Build Status](https://dev.azure.com/ygo74/ansible/_apis/build/status/windows_features?branchName=master)](https://dev.azure.com/ygo74/ansible/_build/latest?definitionId=14&branchName=master) |
-| win_mmsql_engine | |
+| win_mssql_engine | |
 | win_mmsql_db | |
 
 ## Ansible Development environment
