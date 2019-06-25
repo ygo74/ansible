@@ -1,6 +1,6 @@
 ---
 - name: Converge
   hosts: all
-  vars:
+
   roles:
     - role: windows_features
