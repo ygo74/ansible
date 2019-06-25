@@ -55,7 +55,7 @@
     with_items: "{{ molecule_yml.platforms | molecule_get_docker_networks }}"
 
   - name: Create molecule instance(s)
-    shell: "docker run --detach --name {{ item.name }} -p {{ item.published_ports | join(' -p ') }}  {{ item.image }}"
+    shell: "docker run --detach --name {{ item.name }} -p {{ item.published_ports | join(' -p ') }} -m 4GB --cpus 4  {{ item.image }}"
     register: server
     with_items: "{{ molecule_yml.platforms }}"
     async: 7200

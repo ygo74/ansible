@@ -5,6 +5,9 @@
 - name: Configure features
   block:
 
+    - name: Retrieve existing windows features
+      include_tasks: 00-get-windowsfeatures.yml
+
     - name: Display Expected Windows Feature configuration
       debug:
         var:       windows_features_all
@@ -16,6 +19,8 @@
         state:                    '{{ item.state                    | default("present") }}'
         include_sub_features:     '{{ item.include_sub_features     | default(False) }}'
         include_management_tools: '{{ item.include_management_tools | default(False) }}'
+      when:
+        - windows_features_status | default([]) | selectattr("Name", "equalto", item.name) | list | length <= 0
       register: win_feature_configuration_results
       loop: '{{ windows_features_all }}'
 

@@ -4,6 +4,17 @@
 # --------------------------------------------------------------------------------
 - name: Check the list of features with a reference list
   block:
+
+    - name: Display features to check
+      debug:
+        var:       features_to_check
+        verbosity: '{{ win_features_diagnostic_level_debug }}'
+
+    - name: Display features references
+      debug:
+        var:       features_references
+        verbosity: '{{ win_features_diagnostic_level_debug }}'
+
     - name: Fail if we found features not in the reference list
       fail:
         msg: "{{ error_message }} : {{ item }}"

@@ -12,6 +12,10 @@ platforms:
     pre_build_image: true
     published_ports:
     - "8985:5985"
+    cpus: 4
+    memory: 4GB
+    groups:
+      - servercore
 provisioner:
   name: ansible
   options:

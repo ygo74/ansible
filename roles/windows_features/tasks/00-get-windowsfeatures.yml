@@ -1,0 +1,27 @@
+---
+# --------------------------------------------------------------------------------
+# Get windows feature and register the result
+# --------------------------------------------------------------------------------
+- name: Get windows features and register the result
+  block:
+    - name: Retrieve windows features
+      win_shell: Get-WindowsFeature | ? {$_.Installed} | ConvertTo-Json
+      changed_when: false
+      register: get_windows_features_results
+
+
+    - name: Set Windows feature facts
+      set_fact:
+        windows_features_status: '{{ get_windows_features_results.stdout
+                                    | default("[]")
+                                    | from_json
+                                    | selectattr("Installed", "equalto", true)
+                                    | list
+                                    | default("[]")
+                                    }}'
+
+
+    - name: Display windows feature status
+      debug:
+        var: windows_features_status
+        verbosity: '{{ win_features_diagnostic_level_debug }}'
