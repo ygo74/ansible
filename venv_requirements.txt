@@ -115,7 +115,7 @@ testinfra==1.19.0
 tree-format==0.1.2
 typing==3.6.6
 unidiff==0.5.5
-urllib3==1.24.1
+urllib3==1.24.2
 websocket-client==0.54.0
 whichcraft==0.5.2
 xmltodict==0.12.0
