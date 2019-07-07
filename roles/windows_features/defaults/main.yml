@@ -1,9 +1,9 @@
 ---
 # defaults file for win_features
-win_features_diagnostic_level_debug:   4
-win_features_diagnostic_level_verbose: 3
-win_features_diagnostic_level_info:    2
-win_features_diagnostic_level_message: 1
+windows_features_diagnostic_level_debug:   4
+windows_features_diagnostic_level_verbose: 3
+windows_features_diagnostic_level_info:    2
+windows_features_diagnostic_level_message: 1
 
 # Default Values for windows features
 windows_features_os:          []

@@ -6,12 +6,42 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: instance
-    image: centos:7
+  - name: windows_authorization
+    image: ygo74/winrmenabled:latest
+    pull: false
+    pre_build_image: true
+    published_ports:
+    - "8981:5985"
+    cpus: 4
+    memory: 4GB
+    groups:
+      - servercore
 provisioner:
   name: ansible
+  options:
+    vvv: false
+  connection_options:
+    ansible_become: false
+    ansible_user: myadmin
+    ansible_password: loc@lPwd.1
+    ansible_port: 8981
+    ansible_host: 127.0.0.1
+    ansible_connection: winrm
+    ansible_winrm_transport: basic
+    ansible_winrm_server_cert_validation: ignore
+    ansible_winrm_scheme: http
   lint:
     name: ansible-lint
+  playbooks:
+    converge: ../resources/playbook.yml
+    docker:
+      create: create.yml
+  log: true
+scenario:
+  name: default
+  matrix:
+    converge_sequence:
+      - converge
 verifier:
   name: testinfra
   lint:

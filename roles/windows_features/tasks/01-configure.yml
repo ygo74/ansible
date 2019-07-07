@@ -11,7 +11,7 @@
     - name: Display Expected Windows Feature configuration
       debug:
         var:       windows_features_all
-        verbosity: '{{ win_features_diagnostic_level_debug }}'
+        verbosity: '{{ windows_features_diagnostic_level_debug }}'
 
     - name: Add or Remove feature
       win_feature:
@@ -27,6 +27,6 @@
     - name: Display Windows Feature configuration results
       debug:
         var:       win_feature_configuration_results
-        verbosity: '{{ win_features_diagnostic_level_info }}'
+        verbosity: '{{ windows_features_diagnostic_level_info }}'
   tags:
     - install_from_scratch

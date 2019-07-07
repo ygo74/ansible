@@ -24,4 +24,4 @@
     - name: Display windows feature status
       debug:
         var: windows_features_status
-        verbosity: '{{ win_features_diagnostic_level_debug }}'
+        verbosity: '{{ windows_features_diagnostic_level_debug }}'

@@ -1,2 +1,11 @@
 ---
 # defaults file for windows_authorization
+windows_authorization_diagnostic_level_debug:   4
+windows_authorization_diagnostic_level_verbose: 3
+windows_authorization_diagnostic_level_info:    2
+windows_authorization_diagnostic_level_message: 1
+
+# Default Values for windows authorizaton
+windows_authorization_users:  []
+windows_authorization_groups: []
+
