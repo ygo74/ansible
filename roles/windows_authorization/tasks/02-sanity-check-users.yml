@@ -1,0 +1,31 @@
+---
+# --------------------------------------------------------------------------------
+# Sanity check
+# --------------------------------------------------------------------------------
+- name: windows users sanity check
+  block:
+    - name: Retrieve existing windows users
+      include_tasks: 00-get-users.yml
+
+    - name: Check missing expected users
+      include_tasks: 03-assert-users.yml
+      vars:
+        users_references: '{{ windows_authorization_users_current_list }}'
+        users_to_check:   '{{ windows_authorization_users_expected_list  }}'
+        error_message:       'Missing expected users'
+
+    - name: Check Unexpected users
+      include_tasks: 03-assert-users.yml
+      vars:
+        users_references: '{{ windows_authorization_users_expected_list }}'
+        users_to_check:   '{{ windows_authorization_users_current_list  }}'
+        error_message:       'Found unexpected users'
+
+    - name: Fail if windows users have errors
+      fail:
+        msg: "Windows users are not in the desired state"
+      when: windows_authorization_users_error_list | default([]) | length > 0
+
+  tags:
+    - sanity_check
+    - sanity_check_windows_authorization_users

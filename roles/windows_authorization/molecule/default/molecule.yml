@@ -11,7 +11,7 @@ platforms:
     pull: false
     pre_build_image: true
     published_ports:
-    - "8981:5985"
+      - "8981:5985"
     cpus: 4
     memory: 4GB
     groups:
@@ -39,9 +39,9 @@ provisioner:
   log: true
 scenario:
   name: default
-  matrix:
-    converge_sequence:
-      - converge
+  converge_sequence:
+    - create
+    - converge
 verifier:
   name: testinfra
   lint:

@@ -1,2 +1,31 @@
 ---
 # vars file for windows_authorization
+
+# All windows users
+windows_authorization_users_all:           '{{ windows_authorization_users_os
+                                           | union(windows_authorization_users_roles)
+                                           | union(windows_authorization_users_applications)
+                                           }}'
+
+# Expected windows users from configuration
+windows_authorization_users_expected_list: '{{ windows_authorization_users_all
+                                            | selectattr("status", "defined")
+                                            | selectattr("status", "equalto", "present")
+                                            | map(attribute="username")
+                                            | list
+                                            | default([])
+                                            | union(
+                                                windows_authorization_users_all
+                                                | selectattr("status", "undefined")
+                                                | map(attribute="username")
+                                                | list
+                                                | default([])
+                                            )
+                                           }}'
+
+# Current windows feature list
+windows_authorization_users_current_list:  '{{ windows_authorization_users_status
+                                            | map(attribute="Name")
+                                            | list
+                                            | default([])
+                                           }}'

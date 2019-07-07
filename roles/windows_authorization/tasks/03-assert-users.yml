@@ -1,0 +1,34 @@
+---
+# --------------------------------------------------------------------------------
+# Assert list items agains a reference list
+# --------------------------------------------------------------------------------
+- name: Check the list of users with a reference list
+  block:
+
+    - name: Display users to check
+      debug:
+        var:       users_to_check
+        verbosity: '{{ windows_authorization_diagnostic_level_debug }}'
+
+    - name: Display users references
+      debug:
+        var:       users_references
+        verbosity: '{{ windows_authorization_diagnostic_level_debug }}'
+
+    - name: Fail if we found users not in the reference list
+      fail:
+        msg: "{{ error_message }} : {{ item }}"
+      with_items:
+        - '{{ users_to_check | reject("in", users_references) | list }}'
+      ignore_errors: true
+      register: users_to_check_status
+
+    - name: Add error users in the error list
+      set_fact:
+        windows_authorization_users_error_list: '{{ windows_authorization_users_error_list
+                                                    | default([])
+                                                      + [ item.msg ]
+                                                 }}'
+      no_log: true
+      with_items:
+        - '{{ users_to_check_status.results | default([]) }}'

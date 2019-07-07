@@ -6,5 +6,9 @@ windows_authorization_diagnostic_level_info:    2
 windows_authorization_diagnostic_level_message: 1
 
 # Default Values for windows authorizaton
-windows_authorization_users:  []
-windows_authorization_groups: []
+windows_authorization_users_os:            []
+windows_authorization_users_roles:         []
+windows_authorization_users_applications:  []
+windows_authorization_groups_os:           []
+windows_authorization_groups_roles:        []
+windows_authorization_groups_qpplications: []

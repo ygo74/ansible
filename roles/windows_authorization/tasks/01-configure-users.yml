@@ -1,0 +1,29 @@
+---
+# --------------------------------------------------------------------------------
+# Configure
+# --------------------------------------------------------------------------------
+- name: Configure users
+  block:
+
+    - name: Retrieve existing windows users
+      include_tasks: 00-get-users.yml
+
+    - name: Display Expected Windows users configuration
+      debug:
+        var:       windows_authorization_users_all
+        verbosity: '{{ windows_authorization_diagnostic_level_debug }}'
+
+    - name: Create or remove Local Users
+      win_user:
+        name:             '{{ item.username }}'
+        account_disabled: '{{ not item.enabled | default(false) }}'
+        state:            '{{ item.state | default("Present") }}'
+      loop: '{{ windows_authorization_users_all }}'
+      register: windows_authorization_users_results
+
+    - name: Display Windows users results
+      debug:
+        var:       windows_authorization_users_results
+        verbosity: '{{ windows_authorization_diagnostic_level_info }}'
+  tags:
+    - install_from_scratch

@@ -11,9 +11,9 @@
 
     - name: Set Local Users facts
       set_fact:
-        windows_local_users: '{{ get_local_user_results.stdout |default("[]") | from_json }}'
+        windows_authorization_users_status: '{{ get_local_user_results.stdout |default("[]") | from_json }}'
 
     - name: Display Local Users
       debug:
-        var:       windows_local_users
+        var:       windows_authorization_users_status
         verbosity: '{{ windows_authorization_diagnostic_level_debug }}'
