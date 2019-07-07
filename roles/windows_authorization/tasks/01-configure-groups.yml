@@ -1,0 +1,31 @@
+---
+# --------------------------------------------------------------------------------
+# Configure groups
+# --------------------------------------------------------------------------------
+- name: Configure groups
+  block:
+    - name: Retrieve existing windows groups
+      include_tasks: 00-get-groups.yml
+
+    - name: Display Expected Windows groups configuration
+      debug:
+        var:       windows_authorization_groups_all
+        verbosity: '{{ windows_authorization_diagnostic_level_debug }}'
+
+    - name: Create Local groups
+      win_group:
+        name:        '{{ item.name }}'
+        description: '{{ item.description |default(omit) }}'
+        state:       '{{ item.state | default("Present") }}'
+      with_items:
+        - '{{ windows_authorization_groups_all }}'
+      register: windows_authorization_groups_results
+
+    - name: Display Windows groups results
+      debug:
+        var:       windows_authorization_groups_results
+        verbosity: '{{ windows_authorization_diagnostic_level_info }}'
+  tags:
+    - install_from_scratch
+    - install_from_scratch_windows_authorization
+    - install_from_scratch_windows_authorization_groups

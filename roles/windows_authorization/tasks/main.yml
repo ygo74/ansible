@@ -6,5 +6,8 @@
 - name: Import tasks for users sanity check
   import_tasks: 02-sanity-check-users.yml
 
+- name: Import tasks for groups management
+  import_tasks: 01-configure-groups.yml
+
 - name: Import tasks for groups sanity check
   import_tasks: 02-sanity-check-groups.yml
