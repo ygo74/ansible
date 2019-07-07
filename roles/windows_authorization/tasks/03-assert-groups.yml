@@ -1,0 +1,34 @@
+---
+# --------------------------------------------------------------------------------
+# Assert list items agains a reference list
+# --------------------------------------------------------------------------------
+- name: Check the list of groups with a reference list
+  block:
+
+    - name: Display groups to check
+      debug:
+        var:       groups_to_check
+        verbosity: '{{ windows_authorization_diagnostic_level_debug }}'
+
+    - name: Display groups references
+      debug:
+        var:       groups_references
+        verbosity: '{{ windows_authorization_diagnostic_level_debug }}'
+
+    - name: Fail if we found groups not in the reference list
+      fail:
+        msg: "{{ error_message }} : {{ item }}"
+      with_items:
+        - '{{ groups_to_check | reject("in", groups_references) | list }}'
+      ignore_errors: true
+      register: groups_to_check_status
+
+    - name: Add error groups in the error list
+      set_fact:
+        windows_authorization_groups_error_list: '{{ windows_authorization_groups_error_list
+                                                    | default([])
+                                                      + [ item.msg ]
+                                                 }}'
+      no_log: true
+      with_items:
+        - '{{ groups_to_check_status.results | default([]) }}'

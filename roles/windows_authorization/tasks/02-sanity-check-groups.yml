@@ -1,0 +1,32 @@
+---
+# --------------------------------------------------------------------------------
+# Sanity check groups
+# --------------------------------------------------------------------------------
+- name: windows groups sanity check
+  block:
+    - name: Retrieve existing windows groups
+      include_tasks: 00-get-groups.yml
+
+    - name: Check missing expected groups
+      include_tasks: 03-assert-groups.yml
+      vars:
+        groups_references: '{{ windows_authorization_groups_current_list }}'
+        groups_to_check:   '{{ windows_authorization_groups_expected_list  }}'
+        error_message:       'Missing expected groups'
+
+    - name: Check Unexpected groups
+      include_tasks: 03-assert-groups.yml
+      vars:
+        groups_references: '{{ windows_authorization_groups_expected_list }}'
+        groups_to_check:   '{{ windows_authorization_groups_current_list  }}'
+        error_message:       'Found unexpected groups'
+
+    - name: Fail if windows groups have errors
+      fail:
+        msg: "Windows groups are not in the desired state"
+      when: windows_authorization_groups_error_list | default([]) | length > 0
+
+  tags:
+    - sanity_check
+    - sanity_check_windows_authorization
+    - sanity_check_windows_authorization_groups

@@ -10,3 +10,31 @@ windows_authorization_users_os:
     enabled:  true
   - username: 'molecule'
     enabled:  true
+
+windows_authorization_groups_os:
+  - name: 'Administrators'
+  - name: 'Access Control Assistance Operators'
+  - name: 'Backup Operators'
+  - name: 'Certificate Service DCOM Access'
+  - name: 'Cryptographic Operators'
+  - name: 'Distributed COM Users'
+  - name: 'Event Log Readers'
+  - name: 'Guests'
+  - name: 'Hyper-V Administrators'
+  - name: 'IIS_IUSRS'
+  - name: 'Network Configuration Operators'
+  - name: 'Performance Log Users'
+  - name: 'Performance Monitor Users'
+  - name: 'Power Users'
+  - name: 'Print Operators'
+  - name: 'RDS Endpoint Servers'
+  - name: 'RDS Management Servers'
+  - name: 'RDS Remote Access Servers'
+  - name: 'Remote Desktop Users'
+  - name: 'Remote Management Users'
+  - name: 'Replicator'
+  - name: 'Storage Replica Administrators'
+  - name: 'System Managed Accounts Group'
+  - name: 'Users'
+
+

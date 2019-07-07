@@ -23,9 +23,38 @@ windows_authorization_users_expected_list: '{{ windows_authorization_users_all
                                             )
                                            }}'
 
-# Current windows feature list
+# Current windows users list
 windows_authorization_users_current_list:  '{{ windows_authorization_users_status
                                             | map(attribute="Name")
                                             | list
                                             | default([])
                                            }}'
+
+# All windows groups
+windows_authorization_groups_all:           '{{ windows_authorization_groups_os
+                                             | union(windows_authorization_groups_roles)
+                                             | union(windows_authorization_groups_applications)
+                                            }}'
+
+# Expected windows groups from configuration
+windows_authorization_groups_expected_list: '{{ windows_authorization_groups_all
+                                             | selectattr("status", "defined")
+                                             | selectattr("status", "equalto", "present")
+                                             | map(attribute="name")
+                                             | list
+                                             | default([])
+                                             | union(
+                                                windows_authorization_groups_all
+                                                | selectattr("status", "undefined")
+                                                | map(attribute="name")
+                                                | list
+                                                | default([])
+                                             )
+                                            }}'
+
+# Current windows groups list
+windows_authorization_groups_current_list:  '{{ windows_authorization_groups_status
+                                             | map(attribute="Name")
+                                             | list
+                                             | default([])
+                                            }}'

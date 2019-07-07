@@ -11,9 +11,9 @@
 
     - name: Set Local Groups facts
       set_fact:
-        windows_local_groups: '{{ get_local_groups_results.stdout |default("[]") | from_json }}'
+        windows_authorization_groups_status: '{{ get_local_groups_results.stdout |default("[]") | from_json }}'
 
     - name: Display Local Groups
       debug:
-        var:       windows_local_groups
+        var:       windows_authorization_groups_status
         verbosity: '{{ windows_authorization_diagnostic_level_debug }}'

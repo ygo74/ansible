@@ -1,6 +1,6 @@
 ---
 # --------------------------------------------------------------------------------
-# Sanity check
+# Sanity check users
 # --------------------------------------------------------------------------------
 - name: windows users sanity check
   block:
@@ -28,4 +28,5 @@
 
   tags:
     - sanity_check
+    - sanity_check_windows_authorization
     - sanity_check_windows_authorization_users
