@@ -36,5 +36,3 @@ windows_authorization_groups_os:
   - name: 'Storage Replica Administrators'
   - name: 'System Managed Accounts Group'
   - name: 'Users'
-
-
