@@ -1,4 +1,7 @@
 ---
 # tasks file for windows_authorization
-- name: Import tasks for groups management
+- name: Import tasks for users management
   import_tasks: 00-get-users.yml
+
+- name: Import tasks for groups management
+  import_tasks: 00-get-groups.yml

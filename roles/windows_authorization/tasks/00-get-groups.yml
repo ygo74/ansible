@@ -1,0 +1,19 @@
+---
+# --------------------------------------------------------------------------------
+# Get windows groups and register the result
+# --------------------------------------------------------------------------------
+- name: Get windows groups and register the result
+  block:
+    - name: Retrieve Local Groups
+      win_shell: Get-LocalGroup | ConvertTo-Json
+      register: get_local_groups_results
+      changed_when: false
+
+    - name: Set Local Groups facts
+      set_fact:
+        windows_local_groups: '{{ get_local_groups_results.stdout |default("[]") | from_json }}'
+
+    - name: Display Local Groups
+      debug:
+        var:       windows_local_groups
+        verbosity: '{{ windows_authorization_diagnostic_level_debug }}'
