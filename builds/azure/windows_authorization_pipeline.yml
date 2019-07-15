@@ -73,7 +73,7 @@ jobs:
         workingDirectory: roles/windows_authorization
         script: |
           source ../../my_env/bin/activate
-          molecule converge -s azure
+          molecule converge -s azure -- -t sanity_check_windows_authorization
     displayName: 'Execute windows_authorization roles'
 
   - task: Bash@3
