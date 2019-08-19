@@ -9,6 +9,7 @@ Provides prerequisites to use ansible in a professional environment, best practi
 | windows_bootstrap | [![Build Status](https://dev.azure.com/ygo74/ansible/_apis/build/status/ansible-CI?branchName=master)](https://dev.azure.com/ygo74/ansible/_build/latest?definitionId=12&branchName=master) |
 | windows_features | [![Build Status](https://dev.azure.com/ygo74/ansible/_apis/build/status/windows_features?branchName=master)](https://dev.azure.com/ygo74/ansible/_build/latest?definitionId=14&branchName=master) |
 | windows_authorization | [![Build Status](https://dev.azure.com/ygo74/ansible/_apis/build/status/windows_authorization?branchName=master)](https://dev.azure.com/ygo74/ansible/_build/latest?definitionId=15&branchName=master) |
+| windows_packages | [![Build Status](https://dev.azure.com/ygo74/ansible/_apis/build/status/windows_packages?branchName=master)](https://dev.azure.com/ygo74/ansible/_build/latest?definitionId=16&branchName=master) |
 | win_mssql_engine | |
 | win_mssql_db | |
 

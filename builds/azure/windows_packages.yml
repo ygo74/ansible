@@ -1,0 +1,87 @@
+trigger:
+  branches:
+    include:
+    - master
+    - refs/tags/*
+  paths:
+    include:
+    - roles/windows_packages/*
+    - builds/azure/windows_packages_pipeline.yml
+    exclude:
+    - /**/*.md
+
+jobs:
+- job: BuildPackage
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+
+  - task: UsePythonVersion@0
+    inputs:
+        versionSpec: '2.7'
+        architecture: 'x64'
+
+  - task: AzureKeyVault@1
+    inputs:
+      azureSubscription: 'Visual Studio Enterprise (62177529-73f0-4e11-a584-5d3526dc6999)'
+      keyVaultName:  'mesfVault'
+      secretsFilter: 'Ansible-Automation'
+
+  - task: Bash@3
+    inputs:
+        targetType: 'inline'
+        script: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install virtualenv
+          python -m virtualenv my_env
+          source my_env/bin/activate
+          python -m pip install -r venv_requirements.txt
+          sudo apt-get install dos2unix
+    displayName: 'Install tools'
+
+  - task: Bash@3
+    inputs:
+        targetType: 'inline'
+        workingDirectory: roles/windows_packages
+        script: |
+          find roles/windows_packages/ -type f -not -path '*/\.*' -exec grep -Il '.' {} \; | xargs -d '\n' -L 1 dos2unix -k
+    displayName: 'Convert files dos2unix'
+
+  - task: Bash@3
+    inputs:
+        targetType: 'inline'
+        workingDirectory: roles/windows_packages
+        script: |
+          source ../../my_env/bin/activate
+          molecule lint -s azure
+    displayName: 'Molecule lint'
+
+  - task: Bash@3
+    inputs:
+        targetType: 'inline'
+        workingDirectory: roles/windows_packages
+        script: |
+          source ../../my_env/bin/activate
+          az login --service-principal -u 874377e6-b314-4bb7-8889-9a42a339da53 -p $(Ansible-Automation) --tenant bed92f93-1e03-4d54-b10e-467688282e13
+          molecule create  -s azure
+    displayName: 'Create test infrastructure'
+
+  - task: Bash@3
+    inputs:
+        targetType: 'inline'
+        workingDirectory: roles/windows_packages
+        script: |
+          source ../../my_env/bin/activate
+          molecule converge -s azure
+    displayName: 'Execute windows_packages roles'
+
+  - task: Bash@3
+    inputs:
+        targetType: 'inline'
+        workingDirectory: roles/windows_packages
+        script: |
+          source ../../my_env/bin/activate
+          molecule destroy -s azure
+    condition: always()
+    displayName: 'Destroy windows_packages vm'
