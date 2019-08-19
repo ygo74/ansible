@@ -83,5 +83,5 @@ jobs:
         script: |
           source ../../my_env/bin/activate
           molecule destroy -s azure
-    condition: always()
+    condition: succeeded()
     displayName: 'Destroy windows_authorization vm'
