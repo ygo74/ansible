@@ -16,3 +16,4 @@ Provides prerequisites to use ansible in a professional environment, best practi
 1. [Prerequisites](documentation/00-prerequisites.md)
 2. [Molecule](documentation/01-molecule.md)
 3. [Code quality](documentation/02-code-quality.md)
+4. [Azure DevOps builds](documentation/03-builds-azure.md)
