@@ -17,6 +17,8 @@
         name:        '{{ item.name }}'
         description: '{{ item.description |default(omit) }}'
         state:       '{{ item.state | default("Present") }}'
+      when:
+        - windows_authorization_groups_status | default([]) | selectattr("Name", "equalto", item.name) | list | length <= 0
       with_items:
         - '{{ windows_authorization_groups_all }}'
       register: windows_authorization_groups_results
