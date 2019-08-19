@@ -1,0 +1,11 @@
+---
+windows_authorization_users_os:
+  - username: 'Administrator'
+    enabled:  false
+  - username: 'DefaultAccount'
+    enabled:  false
+  - username: 'Guest'
+    enabled:  false
+  - username: 'molecule'
+    enabled:  true
+

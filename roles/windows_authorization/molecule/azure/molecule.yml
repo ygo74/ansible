@@ -16,6 +16,7 @@ platforms:
     storage_name:                     'utautomationstorage'
     groups:
       - windows-2016
+      - azure
 provisioner:
   name: ansible
   connection_options:

@@ -16,6 +16,7 @@ platforms:
     memory: 4GB
     groups:
       - servercore
+      - docker
 provisioner:
   name: ansible
   options:
