@@ -31,6 +31,11 @@ provisioner:
     name: ansible-lint
   playbooks:
     converge: ../resources/playbook.yml
+  config_options:
+    defaults:
+      callback_whitelist: junit
+  env:
+    JUNIT_OUTPUT_DIR: /var/tmp/windows_bootstrap
 scenario:
   name: azure
 verifier:
