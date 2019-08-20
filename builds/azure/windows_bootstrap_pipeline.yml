@@ -86,10 +86,10 @@ jobs:
     condition: succeeded()
     displayName: 'Destroy windows_bootstrap vm'
 
-- task: PublishTestResults@2
-  inputs:
+  - task: PublishTestResults@2
+    inputs:
         testResultsFormat: JUnit
         testResultsFiles:  '**/playbook-*.xml'
         searchFolder:      '/var/tmp/windows_bootstrap'
-  condition: always()
-  displayName: 'Publish test results'
+    condition: always()
+    displayName: 'Publish test results'
