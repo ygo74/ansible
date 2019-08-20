@@ -19,7 +19,7 @@ provisioner:
   connection_options:
     ansible_become: false
     ansible_user: myadmin
-    ansible_password: loc@lPwd.1
+    ansible_password: loc@lPwd.1loc@lPwd.1
     ansible_port: 8985
     ansible_host: 127.0.0.1
     ansible_connection: winrm
@@ -32,6 +32,11 @@ provisioner:
     converge: ../resources/playbook.yml
     default:
       create: create.yml
+  config_options:
+    defaults:
+      callback_whitelist: junit
+  env:
+    JUNIT_OUTPUT_DIR: /var/tmp/windows_bootstrap
   log: true
 scenario:
   name: default

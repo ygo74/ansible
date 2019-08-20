@@ -83,5 +83,13 @@ jobs:
         script: |
           source ../../my_env/bin/activate
           molecule destroy -s azure
-    condition: always()
+    condition: succeeded()
     displayName: 'Destroy windows_bootstrap vm'
+
+- task: PublishTestResults@2
+  inputs:
+        testResultsFormat: JUnit
+        testResultsFiles:  '**/playbook-*.xml'
+        searchFolder:      '/var/tmp/windows_bootstrap'
+  condition: always()
+  displayName: 'Publish test results'
