@@ -65,6 +65,7 @@ isodate==0.6.0
 Jinja2==2.10
 jinja2-time==0.2.0
 jmespath==0.9.4
+junit-xml==1.8
 keyring==18.0.1
 knack==0.3.3
 MarkupSafe==1.1.0
