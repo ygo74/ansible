@@ -35,7 +35,7 @@ provisioner:
     defaults:
       callback_whitelist: junit
   env:
-    JUNIT_OUTPUT_DIR: /var/tmp/windows_bootstrap
+    JUNIT_OUTPUT_DIR: /var/tmp/windows_bootstrap/reports
 scenario:
   name: azure
 verifier:
