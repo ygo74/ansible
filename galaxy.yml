@@ -1,0 +1,13 @@
+---
+namespace: "ygo74"
+name: "windows"
+version: "0.0.1"
+readme: "README.md"
+authors:
+    - "Yannick GOBERT"
+license:
+    - "MIT"
+tags:
+  - windows
+  - collection
+repository: "https://github.com/ygo74/ansible"
