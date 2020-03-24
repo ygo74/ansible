@@ -16,6 +16,13 @@ jobs:
     vmImage: 'Ubuntu-16.04'
 
   steps:
+  - task: Bash@3
+    inputs:
+        targetType: 'inline'
+        script: |
+          export
+    displayName: 'debug environment variables'
+
 
   - task: UsePythonVersion@0
     inputs:
