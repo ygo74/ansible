@@ -1,0 +1,24 @@
+---
+# tasks file for linux_docker
+
+
+# docker thin-pool
+
+## Install prerequisites : https://computingforgeeks.com/install-docker-ce-on-rhel-7-linux/
+- name: Install prerequisites
+  package:
+    name:
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+    state: latest
+
+## COnfigure LVM : https://docs.microsoft.com/fr-fr/previous-versions/azure/virtual-machines/linux/configure-lvm
+# Display Disk : sudo fdisk -l
+# Create Physical : sudo pvdisplay, sudo pvs, pvcreate
+
+- name: check if the device has partition layout
+  command: sfdisk -d {{ docker_storage_thinpool_device_name }}
+  register: partition_layout
+
+- debug: var=partition_layout
