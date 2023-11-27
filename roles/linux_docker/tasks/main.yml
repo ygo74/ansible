@@ -4,6 +4,9 @@
 
 # docker thin-pool
 
+#RHEL 7.3 error on azure : [Errno 14] curl#58 - "SSL peer rejected your certificate as expired.
+# sudo yum update -y --disablerepo='*' --enablerepo='*microsoft*'
+
 ## Install prerequisites : https://computingforgeeks.com/install-docker-ce-on-rhel-7-linux/
 - name: Install prerequisites
   package:
@@ -22,3 +25,8 @@
   register: partition_layout
 
 - debug: var=partition_layout
+
+- name: Create or resize a volume group on top of /dev/sdb1 and /dev/sdc5.
+  lvg:
+    vg:  data-vg-docker
+    pvs: /dev/sdc

@@ -1,9 +1,11 @@
 # ansible
 
 ## Goal
+
 Provides prerequisites to use ansible in a professional environment, best practices and common roles targeted to manage windows nodes.
 
 ## Project Status
+
 | role | build status |
 |--------|------------|
 | windows_bootstrap | [![Build Status](https://dev.azure.com/ygo74/ansible/_apis/build/status/ansible-CI?branchName=master)](https://dev.azure.com/ygo74/ansible/_build/latest?definitionId=12&branchName=master) |
@@ -14,7 +16,9 @@ Provides prerequisites to use ansible in a professional environment, best practi
 | win_mssql_db | |
 
 ## Table of Contents
+
 1. [Prerequisites](documentation/00-prerequisites.md)
-2. [Molecule](documentation/01-molecule.md)
-3. [Code quality](documentation/02-code-quality.md)
-4. [Azure DevOps builds](documentation/03-builds-azure.md)
+1. [Ansible Installation](documentation/01-ansible.md)
+1. [Molecule](documentation/02-molecule.md)
+1. [Code quality](documentation/03-code-quality.md)
+1. [Azure DevOps builds](documentation/04-builds-azure.md)

@@ -5,7 +5,7 @@ driver:
   name: delegated
 platforms:
   - name: lxtest1
-    ip: ''
+    ip: '40.89.161.175'
     resource_group_name:              'ut_automation'
     location:                         'westeurope'
     virtual_network_name:             'ut_automation_vnet'
@@ -17,6 +17,9 @@ platforms:
       - docker
 provisioner:
   name: ansible
+  connection_options:
+    ansible_become: true
+
   log: true
 
 verifier:

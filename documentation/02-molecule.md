@@ -8,6 +8,8 @@ Test ansible role with Molecule | https://www.digitalocean.com/community/tutoria
 
 ## Molecule Installation
 
+
+
 ### Ubuntu Installation
 ```bash
 #Ensure repositories are up-to-date
@@ -19,8 +21,11 @@ sudo python -m pip install virtualenv
 #Create  and activate the virtual environment
 python -m virtualenv my_env
 source my_env/bin/activate
+
 #Install molecule and docker using pip
-python -m pip install molecule docker
+pip install --upgrade setuptools
+pip install --user "molecule[docker,lint]"
+pip install "molecule-azure"
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
