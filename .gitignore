@@ -1,3 +1,4 @@
+ansible_venv/
 my_env/
 roles/windows_bootstrap/molecule/reports/junit-windows-out.xml
 roles/windows_bootstrap/molecule/reports/junit-windows-out.xml

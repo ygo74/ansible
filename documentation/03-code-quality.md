@@ -1,6 +1,7 @@
 # Ansible Code quality
 
 ## Ansible lint
+
 | Site | Link |
 |------|------|
 | Ansible style guide | https://docs.ansible.com/ansible-lint/ |
@@ -9,6 +10,7 @@
 
 
 ### Installation
+
 ```bash
 # Install version 4.1.0 used in the current venv
 pip install ansible-lint==4.1.0
