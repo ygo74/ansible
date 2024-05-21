@@ -42,7 +42,7 @@ python-daemon==3.0.1
 python-dateutil==2.8.2
 PyYAML==6.0.1
 referencing==0.33.0
-requests==2.31.0
+requests==2.32.0
 resolvelib==1.0.1
 rpds-py==0.18.0
 six==1.16.0
